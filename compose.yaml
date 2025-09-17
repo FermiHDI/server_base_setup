@@ -107,6 +107,8 @@ services:
         ipv4_address: ${QSP_IP}
     depends_on:
       -  hd-storage-cluster-controller
+    profiles:
+      - donotstart
 
 networks:
   hd:
