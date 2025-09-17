@@ -1,5 +1,6 @@
 #!/bin/bash
 
+if [[ $1 == "storage" ]] && [[ $2 == "test" ]]; then
 TEMP=0000:$(lspci | grep -oP "(..:..\..)(?= Non-Volatile memory controller: )" | sed -n 1p)
 if [[ $TEMP != "0000:" ]]
   then
@@ -23,3 +24,4 @@ sudo modprobe uio_pci_generic && sudo ./spdk/scripts/setup.sh
 
 docker compose up --attach query-simulator
 docker down
+fi
