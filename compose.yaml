@@ -99,7 +99,6 @@ services:
       DP_QI_PORT: ${DP_QI_PORT}
       SCC_IP: ${SCC_IP}
       SCC_HTTP_PORT: ${SCC_HTTP_PORT}
-      STARTUP_TIME: ${STARTUP_TIME}
     tty: true
     volumes:
       - ./query-simulator/:/query-simulator/json
