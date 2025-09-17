@@ -1,0 +1,36 @@
+{
+  "query_id": null,
+  "batch_ids": null,
+  "group_by": {
+    "mask": "00000000000000000000ffff00000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000",
+    "group_by_fields": [
+      {
+        "id": 0,
+        "starting_index": 10,
+        "ending_index": 12,
+        "name": "as_dst",
+        "type": "uint16",
+        "return_starting_index": 0,
+        "return_ending_index": 2
+      }
+    ]
+  },
+  "aggregations": [
+    {
+      "id": 1,
+      "function": "avg",
+      "type": "uint16",
+      "starting_index": 63,
+      "ending_index": 71,
+      "name": "bytes",
+      "return_type": "uint64",
+      "return_starting_index": 2,
+      "return_ending_index": 10,
+      "filter_type": "none",
+      "filter_value": 0
+    }
+  ],
+  "return_target": null,
+  "return_port": null,
+  "sort_order": []
+}

@@ -1,0 +1,25 @@
+#!/bin/bash
+
+TEMP=0000:$(lspci | grep -oP "(..:..\..)(?= Non-Volatile memory controller: )" | sed -n 1p)
+if [[ $TEMP != "0000:" ]]
+  then
+    export SN_A_NVME_PCIE=$TEMP
+fi
+
+TEMP=0000:$(lspci | grep -oP "(..:..\..)(?= Non-Volatile memory controller: )" | sed -n 2p)
+if [[ $TEMP != "0000:" ]]
+  then
+    export SN_B_NVME_PCIE=$TEMP
+fi
+
+TEMP=0000:$(lspci | grep -oP "(..:..\..)(?= Non-Volatile memory controller: )" | sed -n 3p)
+if [[ $TEMP != "0000:" ]]
+  then
+    export SN_C_NVME_PCIE=$TEMP
+fi
+
+source ./.venv/bin/activate
+sudo modprobe uio_pci_generic && sudo ./spdk/scripts/setup.sh
+
+docker compose up --attach query-simulator
+docker down

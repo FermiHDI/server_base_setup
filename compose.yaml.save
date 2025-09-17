@@ -1,0 +1,118 @@
+services:
+  otelcol:
+    image: otel/opentelemetry-collector-contrib:0.105.0
+    container_name: otel-collector
+    volumes:
+      - ./collector-config.yaml:/etc/otelcol-contrib/config.yaml
+      - ./otel-data:/otel-data
+    networks:
+      hd:
+        ipv4_address: ${OT_IP}
+
+  hd-storage-cluster-controller:
+    image: docker.fermihdi.dev/hd-beta/hd-storage-cluster-controller
+    environment:
+      LOG_LEVEL: 10
+      IN_PORT: ${SSC_INGEST_PORT}
+      HTTP_PORT: ${SCC_HTTP_PORT}
+      OTLP_URL: ${OTLP_URL}
+      SN_ADDRS: ${SN_A_IP}:${SN_WRITE_PORT}:${SN_READ_PORT}
+    tty: true
+    volumes:
+      
+    networks:
+      hd:
+        ipv4_address: ${SCC_IP}
+    depends_on:
+        - otelcol
+        - hd-storage-node-a
+
+  hd-storage-node-a:
+    image: docker.fermihdi.dev/hd-beta/hd-storage-node
+    privileged: true
+    environment:
+      READ_PORT: ${SN_READ_PORT}
+      WRITE_PORT: ${SN_WRITE_PORT}
+      TRID: ${SN_A_NVME_PCIE}
+      OTLP_URL: "${OTLP_URL}"
+      LOG_LEVEL: "${LOG_LEVEL}"
+    volumes:
+      - /dev/hugepages:/dev/hugepages
+    tty: true
+    networks:
+      hd:
+        ipv4_address: ${SN_A_IP}
+    depends_on:
+        - otelcol
+
+  hd-storage-node-b:
+    image: docker.fermihdi.dev/hd-beta/hd-storage-node
+    privileged: true
+    environment:
+      READ_PORT: ${SN_READ_PORT}
+      WRITE_PORT: ${SN_WRITE_PORT}
+      TRID: ${SN_B_NVME_PCIE}
+      OTLP_URL: "${OTLP_URL}"
+      LOG_LEVEL: "${LOG_LEVEL}"
+    volumes:
+      - /dev/hugepages:/dev/hugepages
+    tty: true
+    networks:
+      hd:
+        ipv4_address: ${SN_B_IP}
+    depends_on:
+        - otelcol
+    profiles:
+      - donotstart
+
+  hd-storage-node-c:
+    image: docker.fermihdi.dev/hd-beta/hd-storage-node
+    privileged: true
+    environment:
+      READ_PORT: ${SN_READ_PORT}
+      WRITE_PORT: ${SN_WRITE_PORT}
+      TRID: ${SN_C_NVME_PCIE}
+      OTLP_URL: "${OTLP_URL}"
+      LOG_LEVEL: "${LOG_LEVEL}"
+    volumes:
+      - /dev/hugepages:/dev/hugepages
+    tty: true
+    networks:
+      hd:
+        ipv4_address: ${SN_C_IP}
+    depends_on:
+        - otelcol
+    profiles:
+      - donotstart
+
+  query-simulator:
+    container_name: query-simulator
+    image: docker.fermihdi.dev/hd-beta/hd-query-simulator3
+    command: ["3", "-u 13", "-b 10", "-r 100", "-x 10"]
+    environment:
+      QP_IP: ${QSP_IP}
+      QP_RT_PORT: ${QSP_RT_PORT}
+      QP_DELAY: ${QSP_DELAY}
+
+      DP_IP: ${DP_IP}
+      DP_PI_PORT: ${DP_PI_PORT}
+      DP_QI_PORT: ${DP_QI_PORT}
+      SCC_IP: ${SCC_IP}
+      SCC_HTTP_PORT: ${SCC_HTTP_PORT}
+      STARTUP_TIME: ${STARTUP_TIME}
+    tty: true
+    volumes:
+      - ./query-simulator/:/query-simulator/json
+    networks:
+      hd:
+        ipv4_address: ${QSP_IP}
+    profiles:
+      - donotstart
+
+networks:
+  hd:
+    ipam:
+      driver: default
+      config:
+        - subnet: ${SUBNET}
+          gateway: ${GATEWAY}

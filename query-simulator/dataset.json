@@ -1,0 +1,124 @@
+{
+  "datasets": [
+    {
+      "id": "5122bb41-cd38-478e-90c1-f4fe2d6a186b",
+      "name": "IPFLOW",
+      "purpose": "IP Flow records are one way records of network sessions as seen from a device such as a router, switch, firewall, and servers",
+      "record_len": 79,
+      "fields": [
+        {
+          "name": "peer_ip_src",
+          "type": "uint32",
+          "purpose": "The device which sent this record",
+          "first_byte_position": 0,
+          "last_byte_position": 4
+        },
+        {
+          "name": "iface_in",
+          "type": "uint16",
+          "purpose": "The interface on which the source device received this flow",
+          "first_byte_position": 4,
+          "last_byte_position": 6
+        },
+        {
+          "name": "iface_out",
+          "type": "uint16",
+          "purpose": "The interface on which the source device sent this flow",
+          "first_byte_position": 6,
+          "last_byte_position": 8
+        },
+        {
+          "name": "as_src",
+          "type": "uint16",
+          "purpose": "Source ASN - The autonomous system number where the flow started",
+          "first_byte_position": 8,
+          "last_byte_position": 10
+        },
+        {
+          "name": "as_dst",
+          "type": "uint16",
+          "purpose": "Destination ASN - The autonomous system number where the flow terminated",
+          "first_byte_position": 10,
+          "last_byte_position": 12
+        },
+        {
+          "name": "ip_src",
+          "type": "uint128",
+          "purpose": "The source IP Address of the flow - IP address are just 32bit or 128bit numbers in Big Endian format",
+          "first_byte_position": 12,
+          "last_byte_position": 28
+        },
+        {
+          "name": "ip_dst",
+          "type": "uint128",
+          "purpose": "The destination IP Address of the flow - IP address are just 32bit or 128bit numbers in Big Endian format",
+          "first_byte_position": 28,
+          "last_byte_position": 44
+        },
+        {
+          "name": "port_src",
+          "type": "uint16",
+          "purpose": "The source port number",
+          "first_byte_position": 44,
+          "last_byte_position": 46
+        },
+        {
+          "name": "port_dst",
+          "type": "uint16",
+          "purpose": "The destination port number",
+          "first_byte_position": 46,
+          "last_byte_position": 48
+        },
+        {
+          "name": "tcp_flags",
+          "type": "uint8",
+          "purpose": "tcp flags",
+          "first_byte_position": 48,
+          "last_byte_position": 49
+        },
+        {
+          "name": "ip_proto",
+          "type": "uint8",
+          "purpose": "The IP Protocol used in the flow per https://www.iana.org/assignments/protocol-numbers/protocol-numbers.xhtml",
+          "first_byte_position": 49,
+          "last_byte_position": 50
+        },
+        {
+          "name": "tos",
+          "type": "uint8",
+          "purpose": "Type of service the flow is marked with",
+          "first_byte_position": 50,
+          "last_byte_position": 51
+        },
+        {
+          "name": "sampling_rate",
+          "type": "uint32",
+          "purpose": "The flow sources sampling rate",
+          "first_byte_position": 51,
+          "last_byte_position": 55
+        },
+        {
+          "name": "packets",
+          "type": "uint64",
+          "purpose": "The number of packets in the flow",
+          "first_byte_position": 55,
+          "last_byte_position": 63
+        },
+        {
+          "name": "bytes",
+          "type": "uint64",
+          "purpose": "The total bytes of this flow",
+          "first_byte_position": 63,
+          "last_byte_position": 71
+        },
+        {
+          "name": "timestamp",
+          "type": "uint64",
+          "purpose": "The time when the flow was received",
+          "first_byte_position": 71,
+          "last_byte_position": 79
+        }
+      ]
+    }
+  ]
+}
