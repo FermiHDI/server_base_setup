@@ -23,5 +23,5 @@ source ./.venv/bin/activate
 sudo modprobe uio_pci_generic && sudo ./spdk/scripts/setup.sh
 
 docker compose up --attach query-simulator
-docker down
+docker compose down
 fi
